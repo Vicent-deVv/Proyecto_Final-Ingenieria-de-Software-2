@@ -1,2 +1,11 @@
+# Ignorar la base de datos local de SQLite
+db.sqlite3
+
+# Ignorar archivos compilados de Python
+**/__pycache__/
+*.pyc
+
+# Ignorar entornos virtuales (por si creas uno aquí dentro)
 venv/
-__pycache__/
+.venv/
+env/
