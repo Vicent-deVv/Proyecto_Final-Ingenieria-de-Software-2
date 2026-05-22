@@ -31,12 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #Mis apps
+    'apps.abastecimiento',
+    'apps.almacen',
+    'apps.facturacion',
+    'apps.pedidos',
+    'apps.usuarios'
 ]
 
 MIDDLEWARE = [
@@ -74,10 +82,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bembos_db',   
+        'USER': 'postgres',
+        'PASSWORD': 'VicentDevPGSQL', 
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+#Usuario customizado
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 
 # Password validation
