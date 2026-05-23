@@ -29,6 +29,19 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"Pedido #{self.id} - {self.cliente.username} ({self.get_estado_display()})"
+    
+    def cambiar_estado(self, nuevo_estado):
+        estados_validos = []
+
+        for tupla in self.ESTADOS:
+            estados_validos.append(tupla[0])
+
+        if nuevo_estado in estados_validos:
+            self.estado = nuevo_estado
+            self.save()
+        else:
+            raise ValueError("Error: Ese estado no está permitido en Bembos.")
+        
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalles')
