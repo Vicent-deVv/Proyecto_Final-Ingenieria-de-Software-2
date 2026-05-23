@@ -8,6 +8,17 @@ class Insumo(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def restar_stock(self,cantidad):
+        if cantidad <= 0:
+            raise ValueError("No se puede tener valores negativos")
+        
+
+        if self.stock_actual >= cantidad:
+            self.stock_actual -= cantidad
+            self.save()
+        else:
+            raise ValueError(f"Stock insuficiente de {self.nombre}. Solo quedan {self.stock_actual}.")
 
 class HistorialInventario(models.Model):
     MOVIMIENTOS = [
