@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Bembos</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+
+    <div class="layout-contenedor">
+        
+        <header class="header-bembos">
+            <div class="logo-container">
+                <img src="{% static 'img/bembos_logo.png' %}" alt="Bembos Logo" class="logo-bembos">
+                <span class="titulo-modulo">Reportes y Control de Gestión</span>
+            </div>
+            <div class="usuario-info">
+                <span class="icono-usuario">👤</span>
+                <span class="rol-usuario">Supervisor</span>
+            </div>
+        </header>
+
+        <main class="contenido-dinamico">
+            {% block contenido %}
+            {% endblock %}
+        </main>
+
+        <footer class="footer-bembos">
+            <p>© 2026 Bembos S.A.C. - Sistema de Control de Gestión Interna</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

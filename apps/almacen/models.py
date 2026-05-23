@@ -7,7 +7,7 @@ class Insumo(models.Model):
     unidad_medida = models.CharField(max_length=20, default='Unidades')  # Kg, Unidades, Litros
 
     def __str__(self):
-        return self.nombre
+        return f"Insumo: {self.nombre} - Stock: {self.stock_actual}"
     
     def restar_stock(self,cantidad):
         if cantidad <= 0:

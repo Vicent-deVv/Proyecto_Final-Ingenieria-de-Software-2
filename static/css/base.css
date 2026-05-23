@@ -1,0 +1,75 @@
+/* static/css/base.css */
+
+/* Reset global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* El truco Flexbox para mantener el Footer abajo */
+.layout-contenedor {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Obliga al contenedor a medir el 100% de la pantalla */
+}
+
+/* HEADER (Barra Superior) */
+.header-bembos {
+    background-color: #00187C; /* Azul Bembos */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-bembos {
+    height: 45px;
+    object-fit: contain;
+}
+
+.titulo-modulo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.usuario-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+}
+
+/* ÁREA DE TRABAJO CENTRAL */
+.contenido-dinamico {
+    flex: 1; /* Esto hace que el centro crezca y empuje al footer hacia abajo */
+    padding: 30px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* FOOTER (Barra Inferior con el mismo estilo) */
+.footer-bembos {
+    background-color: #00187C; /* Mismo Azul Corporativo */
+    color: white;
+    text-align: center;
+    padding: 15px 30px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 -4px 6px rgba(0,0,0,0.05); /* Sombra hacia arriba */
+}
