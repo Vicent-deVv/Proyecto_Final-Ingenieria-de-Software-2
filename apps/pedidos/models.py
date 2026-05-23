@@ -42,9 +42,23 @@ class Pedido(models.Model):
         else:
             raise ValueError("Error: Ese estado no está permitido en Bembos.")
         
+    def calcular_total(self):
+        total = 0
+        detalles = self.detalles.all()
+
+        for detallePedido in detalles:
+            total = total + detallePedido.calcular_subtotal()
+
+        return total
+
+
+        
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalles')
     producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField(default=1)
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def calcular_subtotal(self):
+        return self.cantidad * self.precio_unitario
