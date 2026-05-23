@@ -15,3 +15,27 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return f"{self.username} - {self.get_rol_display()}"
+    
+    def  es_admin(self):
+        if self.rol == 'ADMINISTRADOR':
+            return True
+        else:
+            return False
+
+    def es_empleado_almacen(self):
+        if self.rol == 'EMPLEADO_ALMACEN':
+            return True
+        else:
+            return False
+
+    def es_empleado_pedido(self):
+        if self.rol == 'EMPLEADO_PEDIDO':
+            return True
+        else:
+            return False
+
+    def es_cliente(self):
+        if self.rol == 'CLIENTE':
+            return True
+        else:
+            return False
