@@ -134,3 +134,11 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# settings.py
+
+# Si alguien intenta entrar a /gestion/ sin loguearse, Django lo manda aquí:
+LOGIN_URL = '/usuarios/login/'  # Ajusta la ruta exacta de tu URL de login
+
+# Cuando pongan su clave bien en el login, los manda a la raíz principal:
+LOGIN_REDIRECT_URL = '/'

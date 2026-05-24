@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Login</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body class="body-login">
+
+    <div class="contenedor-login">
+        <div class="login-header">
+            <img src="{% static 'img/bembos_logo.png' %}" alt="Bembos Logo" class="logo-login">
+            <h2>Control de Gestión</h2>
+        </div>
+
+        {% if error %}
+            <div class="alerta-error">
+                <span class="icono-alerta">⚠</span> {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'login' %}" class="formulario-login">
+            {% csrf_token %}
+            
+            <div class="grupo-input">
+                <label for="username">Nombre de Usuario:</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="input-login" 
+                    placeholder="Ej: User123" 
+                    required
+                >
+            </div>
+
+            <div class="grupo-input">
+                <label for="password">Contraseña:</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="input-login" 
+                    placeholder="••••••••" 
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn-ingresar">
+                Ingresar al Sistema
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

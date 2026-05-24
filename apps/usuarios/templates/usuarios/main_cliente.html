@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bembos | Las Hamburguesas del Perú</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+
+    <header class="header-bembos">
+        <div class="logo-container">
+            <img src="{% static 'img/bembos_logo.png' %}" alt="Bembos Logo" class="logo-bembos">
+            {% if request.user.is_staff %}
+                <span class="titulo-modulo">Reportes y Control de Gestión</span>
+            {% endif %}
+        </div>
+    
+        <div class="enlaces-header">
+            {% if request.user.is_authenticated %}
+                <div class="usuario-logeado-info">
+                    <span class="saludo-usuario">👤 Hola, <strong>{{ request.user.first_name|default:request.user.username }}</strong></span>
+                    
+                    {% if request.user.is_staff %}
+                        <a href="{% url 'index' %}" class="btn-panel-rapido">Panel Gestión</a>
+                    {% endif %}
+                    
+                    <span class="separador">|</span>
+                    <a href="{% url 'logout' %}" class="link-logout-nav">Cerrar Sesión</a>
+                </div>
+            {% else %}
+                <div class="enlaces-publicos">
+                    <a href="{% url 'login' %}" class="link-nav-cliente">Iniciar Sesión</a>
+                    <a href="{% url 'registro' %}" class="btn-registro-nav">Regístrate</a>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="hero-bembos">
+        <div class="hero-contenido">
+            <h1>¡El verdadero sabor de la hamburguesa a la parilla!</h1>
+            <p>Descubre nuestras promociones exclusivas y haz tu pedido online de forma rápida y segura.</p>
+            
+            <div class="acciones-hero">
+                <a href="{% url 'carta_clientes' %}" class="btn-hero btn-rojo">Ver la Carta 🍔</a>
+                <a href="{% url 'registro' %}" class="btn-hero btn-amarillo">Pedir Ahora 🛒</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-bembos">
+        <p>© 2026 Bembos S.A.C. - Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
