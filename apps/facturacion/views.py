@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Comprobante
 
-# Create your views here.
-def index(request):
-    return HttpResponse("<h1>Facturacion Page</h1>")
+def historial_facturacion(request):
+    comprobantes = Comprobante.objects.all().order_by('-fecha_emision')
+    return render(request, 'facturacion/historial.html', {'comprobantes': comprobantes})

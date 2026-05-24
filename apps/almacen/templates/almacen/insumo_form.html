@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Gestión de Inventario - Ficha de Insumo{% endblock %}
+
+{% block content %}
+<div class="bembos-card" style="max-width: 800px; margin: auto; padding: 0; overflow: hidden;">
+    <div style="background-color: #F7FAFC; padding: 15px 20px; border-bottom: 1px solid #E2E8F0;">
+        <h3 style="margin: 0; color: #1F2937;">{{ titulo_formulario|default:"Nuevo Insumo" }}</h3>
+    </div>
+    
+    <form method="POST" style="padding: 20px;">
+        {% csrf_token %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">MATRICULA(ID)</label>
+                <input type="text" class="form-control" style="width: 60%; background-color: #EDF2F7;" disabled placeholder="Autogenerado" value="{{ insumo.id|default:'' }}">
+            </div>
+            <div></div> <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">INSUMO</label>
+                <input type="text" name="nombre" class="form-control" style="width: 60%;" required value="{{ insumo.nombre|default:'' }}">
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">CATEGORÍA</label>
+                <select name="categoria" class="form-control" style="width: 60%;">
+                    <option value="Cárnicos" {% if insumo.categoria == 'Cárnicos' %}selected{% endif %}>Cárnicos</option>
+                    <option value="Lácteos" {% if insumo.categoria == 'Lácteos' %}selected{% endif %}>Lácteos</option>
+                    <option value="Vegetales" {% if insumo.categoria == 'Vegetales' %}selected{% endif %}>Vegetales</option>
+                    <option value="Abarrotes" {% if insumo.categoria == 'Abarrotes' %}selected{% endif %}>Abarrotes</option>
+                    <option value="Empaques" {% if insumo.categoria == 'Empaques' %}selected{% endif %}>Empaques</option>
+                </select>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">STOCK</label>
+                <input type="number" step="0.01" name="stock" class="form-control" style="width: 60%;" required value="{{ insumo.stock|default:'0' }}">
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">U.MEDIDA</label>
+                <select name="unidad_medida" class="form-control" style="width: 60%;">
+                    <option value="kg" {% if insumo.unidad_medida == 'kg' %}selected{% endif %}>kg</option>
+                    <option value="und" {% if insumo.unidad_medida == 'und' %}selected{% endif %}>und</option>
+                    <option value="L" {% if insumo.unidad_medida == 'L' %}selected{% endif %}>L</option>
+                </select>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">PRECIO (S/.)</label>
+                <input type="number" step="0.01" name="precio" class="form-control" style="width: 60%;" value="{{ insumo.precio|default:'0.00' }}">
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-weight: bold; font-size: 14px;">PROVEEDOR</label>
+                <select name="proveedor" class="form-control" style="width: 60%;">
+                    <option value="">-- Sin Proveedor Asociado --</option>
+                    {% for prov in proveedores %}
+                        <option value="{{ prov.id }}" {% if insumo.proveedor.id == prov.id %}selected{% endif %}>{{ prov.razon_social }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" class="btn-submit" style="background-color: #2563EB; color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; margin-right: 15px;">
+                Confirmar ✔️
+            </button>
+            <a href="{% url 'insumo_list' %}" class="btn-submit" style="background-color: #DC2626; color: white; padding: 10px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px; display: inline-block;">
+                Atrás ⬅️
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -19,9 +19,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('apps.usuarios.urls')),
-    path('pedidos/',include('apps.pedidos.urls')),
-    path('facturacion/',include('apps.facturacion.urls')),
-    path('almacen/',include('apps.almacen.urls')),
-    path('abastecimiento/',include('apps.abastecimiento.urls'))
+    
+    # Mapeo directo respetando tu estructura de carpetas
+    path('', include('apps.usuarios.urls')),
+    path('pedidos/', include('apps.pedidos.urls')),
+    path('almacen/', include('apps.almacen.urls')),
+    path('abastecimiento/', include('apps.abastecimiento.urls')),
+    path('facturacion/', include('apps.facturacion.urls')),
 ]

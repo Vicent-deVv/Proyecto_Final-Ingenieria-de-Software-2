@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Registro de {{ tipo_movimiento|title }}{% endblock %}
+
+{% block content %}
+<div class="bembos-card" style="max-width: 600px; margin: auto;">
+    <div style="border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #002FA7; text-transform: uppercase;">
+            FORMULARIO DE {% if tipo_movimiento == 'ENTRADA' %}INGRESO DE MERCADERÍA{% elif tipo_movimiento == 'SALIDA' %}SALIDAS{% else %}MERMAS{% endif %}
+        </h2>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        {% if tipo_movimiento == 'ENTRADA' %}
+        <div class="form-group">
+            <label>1. SELECCIONE PROVEEDOR</label>
+            <select name="proveedor_id" class="form-control" required>
+                <option value="" disabled selected>Seleccione un proveedor...</option>
+                {% for prov in proveedores %}
+                    <option value="{{ prov.id }}">{{ prov.nombre_empresa }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>NÚMERO DE GUÍA DE REMISIÓN</label>
+            <input type="text" name="guia_remision" class="form-control" required>
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label>{% if tipo_movimiento == 'ENTRADA' %}2. {% else %}1. {% endif %}SELECCIONE INSUMO{% if tipo_movimiento == 'ENTRADA' %} DEL CATÁLOGO{% endif %}</label>
+            <select name="insumo_id" class="form-control" required>
+                <option value="" disabled selected>Seleccione un insumo...</option>
+                {% for ins in insumos %}
+                    <option value="{{ ins.id }}">{{ ins.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
+                <label>CANTIDAD {% if tipo_movimiento == 'ENTRADA' %}RECIBIDA{% elif tipo_movimiento == 'SALIDA' %}A RETIRAR{% else %}A DESCARTAR{% endif %}</label>
+                <input type="number" name="cantidad" class="form-control" min="1" required>
+            </div>
+            {% if tipo_movimiento != 'ENTRADA' %}
+            <div class="form-group" style="flex: 1;">
+                <label>MEDIDA</label>
+                <select name="medida" class="form-control">
+                    <option value="KG">KG</option>
+                    <option value="L">L</option>
+                    <option value="UNID">UNID</option>
+                </select>
+            </div>
+            {% endif %}
+            {% if tipo_movimiento == 'ENTRADA' %}
+            <div class="form-group" style="flex: 1;">
+                <label>FECHA DE VENCIMIENTO</label>
+                <input type="date" name="fecha_vencimiento" class="form-control">
+            </div>
+            {% endif %}
+        </div>
+
+        {% if tipo_movimiento == 'SALIDA' %}
+        <div class="form-group">
+            <label>2. ÁREA DE DESTINO</label>
+            <select name="area_destino" class="form-control" required>
+                <option value="COCINA">Cocina</option>
+                <option value="BARRA">Barra</option>
+                <option value="CAJA">Caja</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>NOMBRE DEL OPERARIO</label>
+            <input type="text" name="operario" class="form-control" required>
+        </div>
+        {% endif %}
+
+        {% if tipo_movimiento == 'MERMA' %}
+        <div class="form-group">
+            <label>2. MOTIVO DE LA MERMA</label>
+            <select name="motivo_merma" class="form-control" required>
+                <option value="CADUCIDAD">Caducidad</option>
+                <option value="MAL_ESTADO">Mal Estado</option>
+                <option value="ROTURA">Rotura</option>
+            </select>
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label>OBSERVACIÓN {% if tipo_movimiento == 'ENTRADA' %}DEL ENVÍO{% else %}ADICIONAL{% endif %}</label>
+            <input type="text" name="observacion" class="form-control">
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 25px; justify-content: center;">
+            <button type="submit" class="btn-submit {% if tipo_movimiento == 'ENTRADA' %}btn-entrada{% else %}btn-salida{% endif %}" style="padding: 10px 30px; font-size: 16px;">
+                Guardar ✔️
+            </button>
+            <a href="{% url 'index' %}" class="btn-submit" style="background-color: #E24C4C; color: white; padding: 10px 30px; text-decoration: none; font-size: 16px; text-align: center;">
+                Atrás ⬅️
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

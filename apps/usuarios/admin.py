@@ -5,5 +5,4 @@ from .models import Usuario
 class CustomUserAdmin(UserAdmin):
     model = Usuario
 
-
 admin.site.register(Usuario, CustomUserAdmin)

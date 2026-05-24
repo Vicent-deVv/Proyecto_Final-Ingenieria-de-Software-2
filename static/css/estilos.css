@@ -1,0 +1,144 @@
+:root {
+    --bembos-blue: #002FA7;
+    --bg-light: #F4F6F9;
+    --card-bg: #FFFFFF;
+    --text-dark: #1F2937;
+    --border-color: #D1D5DB;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0; 
+    padding: 0;
+}
+
+/* Navbar */
+.bembos-navbar {
+    background-color: var(--bembos-blue);
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-brand { display: flex; align-items: center; gap: 20px; }
+.logo-text { font-size: 26px; font-weight: 900; font-style: italic; }
+.page-title { font-size: 18px; font-weight: normal; border-left: 2px solid #FFFFFF; padding-left: 20px; margin:0;}
+.user-profile { display: flex; align-items: center; gap: 10px; font-weight: bold;}
+.user-icon { background-color: rgba(255,255,255,0.2); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+/* Contenedores */
+.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+.bembos-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 35px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+
+/* Alertas */
+.alerta { padding: 12px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; }
+.alerta-error { background-color: #FED7D7; color: #9B2C2C; border-left: 4px solid #9B2C2C; }
+.alerta-exito { background-color: #C6F6D5; color: #22543D; border-left: 4px solid #22543D; }
+
+/* Tablas Globales */
+.bembos-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.bembos-table th { background-color: var(--bembos-blue); color: white; padding: 12px; text-align: left; }
+.bembos-table td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+
+/* =========================================
+   Estilos de Formularios (Login y Registro) 
+   ========================================= */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box; /* Evita que el input se salga de la tarjeta */
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--bembos-blue);
+    box-shadow: 0 0 0 3px rgba(0, 47, 167, 0.1);
+}
+
+.btn-submit {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.1s, filter 0.2s;
+}
+
+.btn-submit:hover {
+    filter: brightness(0.95);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Estados de alerta para el stock */
+.stock-critico {
+    font-size: 16px;
+    font-weight: bold;
+    color: #E24C4C !important; /* Rojo */
+}
+
+.stock-normal {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1F2937 !important; /* Gris oscuro */
+}
+
+/* Estados para botones de movimiento */
+.btn-entrada {
+    background-color: #002FA7; /* Azul Bembos */
+    color: white;
+}
+
+.btn-salida, .btn-merma {
+    background-color: #E24C4C; /* Rojo */
+    color: white;
+}
+
+/* =========================================
+   Etiquetas de Estado (Proveedores/Insumos) 
+   ========================================= */
+.badge-estado {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.badge-activo {
+    background-color: #C6F6D5 !important;
+    color: #22543D !important;
+}
+
+.badge-inactivo {
+    background-color: #FED7D7 !important;
+    color: #9B2C2C !important;
+}
+
+.stock-critico { font-size: 16px; font-weight: bold; color: #E24C4C !important; }
+.stock-normal { font-size: 16px; font-weight: bold; color: #1F2937 !important; }
+
+.badge-estado { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+.badge-activo { background-color: #C6F6D5 !important; color: #22543D !important; }
+.badge-inactivo { background-color: #FED7D7 !important; color: #9B2C2C !important; }

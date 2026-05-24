@@ -1,58 +1,26 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión - Login</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-</head>
-<body class="body-login">
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Iniciar Sesión{% endblock %}
 
-    <div class="contenedor-login">
-        <div class="login-header">
-            <img src="{% static 'img/bembos_logo.png' %}" alt="Bembos Logo" class="logo-login">
-            <h2>Control de Gestión</h2>
+{% block content %}
+<div class="bembos-card" style="max-width: 400px; margin: auto; margin-top: 50px;">
+    <h2 style="text-align: center; color: #002FA7;">Bienvenido de vuelta</h2>
+    
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" name="username" class="form-control" required>
         </div>
-
-        {% if error %}
-            <div class="alerta-error">
-                <span class="icono-alerta">⚠</span> {{ error }}
-            </div>
-        {% endif %}
-
-        <form method="POST" action="{% url 'login' %}" class="formulario-login">
-            {% csrf_token %}
-            
-            <div class="grupo-input">
-                <label for="username">Nombre de Usuario:</label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    name="username" 
-                    class="input-login" 
-                    placeholder="Ej: User123" 
-                    required
-                >
-            </div>
-
-            <div class="grupo-input">
-                <label for="password">Contraseña:</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    class="input-login" 
-                    placeholder="••••••••" 
-                    required
-                >
-            </div>
-
-            <button type="submit" class="btn-ingresar">
-                Ingresar al Sistema
-            </button>
-        </form>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+        
+        <button type="submit" class="btn-submit" style="width: 100%; margin-top: 10px; font-size: 16px; background-color: #F3D05C; color: black;">Ingresar</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'registro' %}" style="color: #4BA3E3; text-decoration: none; font-weight: bold;">¿Eres nuevo? Regístrate aquí</a>
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}

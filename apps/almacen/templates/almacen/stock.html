@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Kardex y Control de Existencias (Inventario Real){% endblock %}
+
+{% block content %}
+<div class="bembos-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #002FA7;">Control de Stock de Materia Prima</h2>
+        <a href="{% url 'index' %}" style="background-color: #002FA7; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px;">⬅️ Volver al Panel</a>
+    </div>
+
+    <table class="bembos-table">
+        <thead>
+            <tr>
+                <th>ID Insumo</th>
+                <th>Nombre del Insumo</th>
+                <th>Stock Disponible</th>
+                <th>Unidad</th>
+                <th>Estado Crítico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ins in insumos %}
+            <tr>
+                <td>#{{ ins.id }}</td>
+                <td><strong>{{ ins.nombre }}</strong></td>
+                <td class="{% if ins.stock < 20 %}stock-critico{% else %}stock-normal{% endif %}">
+                </td>
+                <td>{{ ins.unidad_medida }}</td>
+                <td>
+                    {% if ins.stock < 20 %}
+                        <span style="color: white; background: #E24C4C; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">ALERTA DE REABASTECIMIENTO</span>
+                    {% else %}
+                        <span style="color: #22543D; background: #C6F6D5; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">STOCK SEGURO</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #718096; padding: 20px;">No hay insumos registrados en el Kardex. Registra insumos en el panel de administración.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

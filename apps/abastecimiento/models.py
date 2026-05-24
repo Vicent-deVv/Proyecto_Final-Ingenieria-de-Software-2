@@ -1,19 +1,15 @@
 from django.db import models
-from apps.usuarios.models import Usuario
-from apps.almacen.models import Insumo
 
 class Proveedor(models.Model):
+    ESTADOS = (('ACTIVO', 'Activo'), ('INACTIVO', 'Inactivo'))
     ruc = models.CharField(max_length=11, unique=True)
-    nombre_empresa = models.CharField(max_length=150)
+    razon_social = models.CharField(max_length=100)
+    contacto = models.CharField(max_length=100, blank=True, null=True)
+    telefono = models.CharField(max_length=15, blank=True, null=True)
+    correo = models.EmailField(blank=True, null=True)
+    direccion = models.CharField(max_length=200, blank=True, null=True)
+    categoria = models.CharField(max_length=50, default='Alimentos')
+    estado = models.CharField(max_length=10, choices=ESTADOS, default='ACTIVO')
 
     def __str__(self):
-        return self.nombre_empresa
-
-class OrdenAbastecimiento(models.Model):
-    administrador = models.ForeignKey(Usuario, on_delete=models.PROTECT)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT)
-    fecha_pedido = models.DateTimeField(auto_now_add=True)
-    completado = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"Orden #{self.id} - {self.proveedor.nombre_empresa}"
+        return self.razon_social

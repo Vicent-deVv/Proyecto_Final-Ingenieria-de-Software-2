@@ -1,25 +1,62 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block css_extra %}
-    <link rel="stylesheet" href="{% static 'css/gestion.css' %}">
-{% endblock %}
-
-{% block titulo_pantalla %}Panel de Gestión Operativa (Almacén / Cocina){% endblock %}
+{% block titulo_pantalla %}Módulo de Control y Operaciones (Backoffice){% endblock %}
 
 {% block content %}
-<div class="bembos-card">
-    <h2>Seleccione una operación para continuar</h2>
-    
-    <div class="grid-panel">
-        <button class="btn-panel bg-amarillo">📦 Registrar Entrada</button>
-        <button class="btn-panel bg-rojo">🚪 Registrar Salida</button>
-        <button class="btn-panel bg-celeste">🗑️ Registrar Merma</button>
-    </div>
+<div style="margin-bottom: 25px;">
+    <h2>Panel de Control Centralizado</h2>
+    <p style="color: #4A5568;">Bienvenido, <strong>{{ request.user.username }}</strong>. Seleccione el módulo al que desea acceder.</p>
+</div>
 
-    <div class="grid-panel-secundario">
-        <button class="btn-panel bg-azul">🔍 Consultar Stock</button>
-        <button class="btn-panel bg-amarillo">📋 Ver Historial</button>
+<div class="bembos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    
+    {% if request.user.is_superuser or request.user.rol in 'COCINERO,SUPERVISOR' %}
+    <div class="bembos-card" style="border-top: 5px solid #002FA7;">
+        <h3>🍳 Producción y Cocina</h3>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Monitoreo de pedidos en tiempo real.</p>
+        <a href="{% url 'monitor_cocina' %}" style="display: block; text-align: center; background-color: #002FA7; color: white; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: bold;">📺 Abrir Monitor en Vivo</a>
     </div>
+    {% endif %}
+
+    {% if request.user.is_superuser or request.user.rol in 'ALMACENERO,SUPERVISOR' %}
+    <div class="bembos-card" style="border-top: 5px solid #F3D05C;">
+        <h3>📦 Logística y Almacén</h3>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Gestión de inventario y movimientos físicos.</p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="{% url 'insumo_list' %}" style="text-align: center; background-color: #1F2937; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">📋 Catálogo de Insumos</a>
+            <a href="{% url 'registrar_movimiento' 'ENTRADA' %}" style="text-align: center; background-color: #002FA7; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">➕ Registrar Entrada</a>
+            <a href="{% url 'registrar_movimiento' 'SALIDA' %}" style="text-align: center; background-color: #E24C4C; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">➖ Registrar Salida</a>
+            <a href="{% url 'registrar_movimiento' 'MERMA' %}" style="text-align: center; background-color: #D69E2E; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">🗑️ Registrar Merma</a>
+            <a href="{% url 'consultar_stock' %}" style="text-align: center; background-color: #E2E8F0; color: #2D3748; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">🔍 Ver Kardex Físico</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if request.user.is_superuser or request.user.rol in 'ALMACENERO,SUPERVISOR' %}
+    <div class="bembos-card" style="border-top: 5px solid #38A169;">
+        <h3>🚚 Abastecimiento</h3>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Directorio de proveedores y órdenes.</p>
+        <a href="{% url 'proveedor_list' %}" style="display: block; text-align: center; background-color: #38A169; color: white; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: bold;">🏢 Lista de Proveedores</a>
+    </div>
+    {% endif %}
+
+    {% if request.user.is_superuser or request.user.rol == 'SUPERVISOR' %}
+    <div class="bembos-card" style="border-top: 5px solid #E24C4C;">
+        <h3>📊 Finanzas y Reportes</h3>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Comprobantes, ventas y paneles gerenciales.</p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="{% url 'historial_facturacion' %}" style="text-align: center; background-color: #E24C4C; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">🧾 Registro de Ventas</a>
+            <a href="{% url 'panel_reportes' %}" style="text-align: center; background-color: #8B5CF6; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">📈 Dashboard de Reportes</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if request.user.is_superuser %}
+    <div class="bembos-card" style="border-top: 5px solid #2D3748; background-color: #F7FAFC;">
+        <h3>🛡️ Sistema Core (Django)</h3>
+        <p style="font-size: 14px; color: #718096; margin-bottom: 15px;">Acceso directo a tablas de la base de datos.</p>
+        <a href="/admin/" target="_blank" style="display: block; text-align: center; background-color: #2D3748; color: white; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: bold;">🔑 Abrir Django Admin ↗</a>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

@@ -1,100 +1,46 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
+from .models import Usuario
+from apps.pedidos.models import Producto
 
-def main_clientes(request):
-    return render(request, 'usuarios/main_cliente.html')
 
 def login_personalizado(request):
-    if request.user.is_authenticated:
-        # Si ya está logueado, lo redirigimos según su rol de inmediato
-        if request.user.is_staff:
-            return redirect('index') # Pantalla de Reportes / Empleados
-        else:
-            return redirect('carta_clientes') # Pantalla para Clientes
-        
-    error_mensaje = None
-
     if request.method == 'POST':
-        usuario_tipeado = request.POST.get('username')
-        clave_tipeada = request.POST.get('password')
-
-        usuario_valido = authenticate(request, username=usuario_tipeado, password=clave_tipeada)
-
-        if usuario_valido is not None:
-            login(request, usuario_valido)
-            
-            # ─── AQUÍ REVISAMOS EL ROL RECIÉN LOGUEADO ───
-            if usuario_valido.is_staff:
-                # Si es administrador, supervisor o empleado con acceso al sistema
-                return redirect('index') 
-            else:
-                # Si es un cliente común que solo compra online
-                return redirect('carta_clientes') 
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+        user = authenticate(request, username=u, password=p)
+        if user is not None:
+            login(request, user)
+            # Validamos si es Admin de Django (superusuario) o si es personal de tienda
+            if user.is_superuser or user.rol in ['COCINERO', 'ALMACENERO', 'SUPERVISOR']:
+                return redirect('index') # Al panel de control/gestión
+            return redirect('carta_clientes') # Clientes van a la carta
         else:
-            error_mensaje = "Usuario o contraseña incorrectos. Inténtalo de nuevo."
-
-    return render(request, 'usuarios/login.html', {'error': error_mensaje})
+            messages.error(request, "Credenciales inválidas.")
+    return render(request, 'usuarios/login.html')
 
 def logout_personalizado(request):
-    """Cierra la sesión del supervisor y lo regresa al login"""
     logout(request)
     return redirect('login')
 
-
 def registro_personalizado(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-
-    # ─── AQUÍ TRAEMOS TU MODELO PERSONALIZADO DE MANERA SEGURA ───
-    User = get_user_model() 
-
-    error_mensaje = None
-
     if request.method == 'POST':
-        usuario = request.POST.get('username')
-        nombre = request.POST.get('first_name')
-        correo = request.POST.get('email')
-        clave = request.POST.get('password')
-        clave_confirm = request.POST.get('password_confirm')
-
-        if clave != clave_confirm:
-            error_mensaje = "Las contraseñas no coinciden. Inténtalo de nuevo."
-        
-        # Ahora estas consultas llamarán automáticamente a tu modelo 'usuarios.Usuario'
-        elif User.objects.filter(username=usuario).exists():
-            error_mensaje = "El nombre de usuario ya se encuentra registrado."
-            
-        elif User.objects.filter(email=correo).exists():
-            error_mensaje = "Este correo electrónico ya está en uso."
-            
+        u = request.POST.get('username')
+        e = request.POST.get('email')
+        p = request.POST.get('password')
+        # Por defecto, el que se registra por la web es CLIENTE
+        if Usuario.objects.filter(username=u).exists():
+            messages.error(request, "Ese nombre de usuario ya está en uso.")
         else:
-            # Crea el registro en tu tabla personalizada encriptando la clave
-            nuevo_usuario = User.objects.create_user(
-                username=usuario,
-                email=correo,
-                password=clave,
-                first_name=nombre
-            )
-            nuevo_usuario.save()
-            
-            login(request, nuevo_usuario)
-            return redirect('carta_clientes')
-
-    return render(request, 'usuarios/registro.html', {'error': error_mensaje})
-
+            user = Usuario.objects.create_user(username=u, email=e, password=p, rol='CLIENTE')
+            messages.success(request, "Registro exitoso. Ya puedes iniciar sesión.")
+            return redirect('login')
+    return render(request, 'usuarios/registro.html')
 
 def index(request):
-    """
-    RUTA 1: Panel de Gestión Integral para Empleados/Supervisores (Almacén, Cocina, etc.)
-    """
     return render(request, 'usuarios/gestion.html')
 
-
 def carta_clientes(request):
-    """
-    RUTA 2: Catálogo o Menú principal de cara al Cliente para armar su pedido
-    """
-    # Nota: Más adelante, aquí jalarás Producto.objects.all() para enviarlo al HTML
-    return render(request, 'usuarios/carta.html')
+    productos = Producto.objects.filter(activo=True)
+    return render(request, 'usuarios/carta.html', {'productos': productos})

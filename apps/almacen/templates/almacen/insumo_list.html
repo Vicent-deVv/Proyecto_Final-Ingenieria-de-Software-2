@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Gestión de Inventario - Catálogo{% endblock %}
+
+{% block content %}
+<div class="bembos-card" style="padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="border: 1px solid #CBD5E0; border-radius: 4px; padding: 5px 10px; display: flex; align-items: center; background: white;">
+            🔍 <input type="text" placeholder="Buscar Insumo" style="border: none; outline: none; margin-left: 10px; width: 200px;">
+        </div>
+        <a href="{% url 'crear_insumo' %}" style="border: 1px solid #1F2937; background: white; color: #1F2937; padding: 8px 15px; border-radius: 4px; font-weight: bold; text-decoration: none;">
+            ➕ Nuevo Insumo
+        </a>
+    </div>
+
+    <table class="bembos-table" style="border: 1px solid #E2E8F0; text-align: center;">
+        <thead style="background-color: #F7FAFC; color: #1F2937; border-bottom: 2px solid #CBD5E0;">
+            <tr>
+                <th>ID</th>
+                <th style="text-align: left;">INSUMO</th>
+                <th>CATEGORÍA</th>
+                <th>STOCK</th>
+                <th>MEDIDA</th>
+                <th>PRECIO</th>
+                <th>ACCIÓN</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ins in insumos %}
+            <tr>
+                <td><strong>{{ ins.id }}</strong></td>
+                <td style="text-align: left; font-weight: bold;">{{ ins.nombre }}</td>
+                <td>{{ ins.categoria }}</td>
+                <td class="{% if ins.stock < 20 %}stock-critico{% else %}stock-normal{% endif %}">
+                    {{ ins.stock }}
+                </td>
+                <td>{{ ins.unidad_medida }}</td>
+                <td>S/. {{ ins.precio }}</td>
+                <td>
+                    <a href="{% url 'editar_insumo' ins.id %}" style="text-decoration: none; font-size: 16px; margin-right: 10px;" title="Editar">✏️</a>
+                    <a href="{% url 'eliminar_insumo' ins.id %}" style="text-decoration: none; font-size: 16px;" title="Eliminar" onclick="return confirm('¿Seguro?');">🗑️</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="padding: 20px; color: #718096;">Catálogo vacío.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

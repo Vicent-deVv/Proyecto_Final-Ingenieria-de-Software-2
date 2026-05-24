@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Reportes y Control de Gestión{% endblock %}
+
+{% block content %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        .bembos-card { border: none !important; box-shadow: none !important; }
+        body { background-color: white; }
+    }
+</style>
+
+<div class="bembos-card" style="padding: 20px;">
+    
+    <form method="GET" class="no-print" style="display: flex; gap: 40px; margin-bottom: 20px;">
+        <div>
+            <label style="display: block; font-weight: bold; margin-bottom: 8px;">Seleccione el Reporte:</label>
+            <select name="tipo_reporte" onchange="this.form.submit()" class="form-control" style="width: 250px; background-color: #EDF2F7; padding: 8px; border-radius: 4px; border: 1px solid #CBD5E0;">
+                <option value="">Reporte General (Todos)</option>
+                <option value="SALIDAS" {% if tipo_reporte == 'SALIDAS' %}selected{% endif %}>Reporte de Salidas (Consumo)</option>
+                <option value="ENTRADAS" {% if tipo_reporte == 'ENTRADAS' %}selected{% endif %}>Reporte de Entrada (Lotes)</option>
+                <option value="MERMAS" {% if tipo_reporte == 'MERMAS' %}selected{% endif %}>Reporte de Mermas</option>
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-weight: bold; margin-bottom: 8px;">Filtrar por Fecha Exacta:</label>
+            <input type="date" name="fecha" value="{{ fecha_filtro }}" onchange="this.form.submit()" class="form-control" style="width: 250px; background-color: #EDF2F7; padding: 8px; border-radius: 4px; border: 1px solid #CBD5E0;">
+        </div>
+        
+        <div style="align-self: flex-end;">
+            <a href="{% url 'panel_reportes' %}" style="text-decoration: none; font-size: 14px; font-weight: bold; color: #E24C4C;">✖ Limpiar Filtros</a>
+        </div>
+    </form>
+
+    <h3 class="no-print" style="margin-bottom: 15px; color: #1F2937;">Vista Previa del Reporte:</h3>
+
+    <div style="border: 1px solid #CBD5E0; border-radius: 8px; padding: 0; overflow: hidden; margin-bottom: 20px;">
+        <div style="padding: 15px; border-bottom: 1px solid #CBD5E0; background-color: #F7FAFC;">
+            <div style="font-size: 13px; font-weight: bold;">{{ titulo_reporte }}</div>
+            <div style="font-size: 12px; color: #4A5568;">Sede: Principal | Fecha de consulta: {% now "d/m/Y" %}</div>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px;">
+            <thead style="border-bottom: 1px solid #CBD5E0; background-color: #F7FAFC;">
+                <tr>
+                    <th style="padding: 10px;">FECHA Y HORA</th>
+                    <th style="padding: 10px;">INSUMO</th>
+                    <th style="padding: 10px;">OPERACIÓN</th>
+                    <th style="padding: 10px;">CANTIDAD</th>
+                    <th style="padding: 10px;">OBSERVACIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mov in movimientos %}
+                <tr style="border-bottom: 1px solid #E2E8F0;">
+                    <td style="padding: 10px;">{{ mov.fecha|date:"d/m/Y H:i" }}</td>
+                    <td style="font-weight: bold;">{{ mov.insumo.nombre }}</td>
+                    <td>
+                        <span class="badge-estado {% if mov.tipo == 'ENTRADA' %}badge-activo{% elif mov.tipo == 'MERMA' %}badge-inactivo{% else %}badge-estado{% endif %}" {% if mov.tipo == 'SALIDA' %}style="background-color: #FEEBC8; color: #C05621;"{% endif %}>
+                            {{ mov.tipo }}
+                        </span>
+                    </td>
+                    <td class="{% if mov.tipo == 'ENTRADA' %}stock-normal{% else %}stock-critico{% endif %}">
+                        {% if mov.tipo == 'ENTRADA' %}+{% else %}-{% endif %} {{ mov.cantidad }} {{ mov.insumo.unidad_medida }}
+                    </td>
+                    <td style="font-size: 12px; color: #718096;">{{ mov.observacion|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 20px; color: #718096;">No se encontraron registros para los filtros seleccionados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div style="padding: 15px; display: flex; justify-content: space-between; font-weight: bold; border-top: 1px solid #CBD5E0; background-color: #F7FAFC;">
+            <span>TOTAL DE REGISTROS AUDITADOS:</span>
+            <span>{{ movimientos|length }} Operaciones</span>
+        </div>
+    </div>
+
+    <div class="no-print" style="text-align: center; margin-top: 20px;">
+        <button onclick="window.print()" style="background-color: #2563EB; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; margin-right: 15px;">
+            Descargar PDF 📄
+        </button>
+        <button onclick="alert('El reporte ha sido autorizado y registrado en la bitácora.')" style="background-color: #16A34A; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px;">
+            Autorizar Reporte ✔️
+        </button>
+    </div>
+</div>
+{% endblock %}

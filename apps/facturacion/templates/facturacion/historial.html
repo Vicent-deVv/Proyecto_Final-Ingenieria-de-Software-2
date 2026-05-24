@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Módulo de Caja - Control de Auditoría Electrónica{% endblock %}
+{% block content %}
+<div class="bembos-card">
+    <h2>Registro Diario de Comprobantes (Ventas)</h2>
+    <table class="bembos-table">
+        <thead>
+            <tr>
+                <th>Nro Comprobante</th>
+                <th>Fecha Emisión</th>
+                <th>Cliente Titular</th>
+                <th>Subtotal (S/)</th>
+                <th>I.G.V. (18%)</th>
+                <th>Monto Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in comprobantes %}
+            <tr>
+                <td><strong>{{ c.tipo }} {{ c.serie }}-{{ c.correlativo }}</strong></td>
+                <td>{{ c.fecha_emision|date:"d/m/Y H:i" }}</td>
+                <td>{{ c.cliente_nombre }}</td>
+                <td>S/ {{ c.subtotal }}</td>
+                <td>S/ {{ c.igv }}</td>
+                <td style="font-weight: bold; color: #002FA7;">S/ {{ c.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No se registran transacciones en este turno de caja.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

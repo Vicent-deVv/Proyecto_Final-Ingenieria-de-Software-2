@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block titulo_pantalla %}Gestión de Abastecimiento y Proveedores{% endblock %}
+
+{% block content %}
+<div class="bembos-card" style="padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="display: flex; gap: 15px;">
+            <div style="border: 1px solid #CBD5E0; border-radius: 4px; padding: 5px 10px; display: flex; align-items: center; background: white;">
+                🔍 <input type="text" placeholder="Buscar Proveedor" style="border: none; outline: none; margin-left: 10px;">
+            </div>
+        </div>
+        <a href="{% url 'crear_proveedor' %}" style="border: 1px solid #1F2937; background: white; color: #1F2937; padding: 8px 15px; border-radius: 4px; font-weight: bold; text-decoration: none;">
+            ➕ Nuevo Proveedor
+        </a>
+    </div>
+
+    <table class="bembos-table" style="border: 1px solid #E2E8F0; text-align: center; margin-bottom: 30px;">
+        <thead style="background-color: #F7FAFC; color: #1F2937;">
+            <tr>
+                <th style="text-align: left;">PROVEEDOR</th>
+                <th>RUC</th>
+                <th>ESTADO</th>
+                <th>ACCIÓN</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+                <td style="text-align: left; font-weight: bold;">{{ proveedor.razon_social }}</td>
+                <td>{{ proveedor.ruc }}</td>
+                <td>
+                    <span class="badge-estado {% if proveedor.estado == 'ACTIVO' %}badge-activo{% else %}badge-inactivo{% endif %}">
+                        {{ proveedor.estado }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'editar_proveedor' proveedor.id %}" style="text-decoration: none; font-size: 16px;">✏️</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="padding: 20px; color: #718096;">Sin proveedores.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,36 +1,16 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block css_extra %}
-    <link rel="stylesheet" href="{% static 'css/carta.css' %}">
-{% endblock %}
-
-{% block titulo_pantalla %}Nuestra Carta - Bembos Pasión{% endblock %}
-
 {% block content %}
 <div class="bembos-card">
-    <h2>¿Qué se te antoja hoy?</h2>
-    
-    <div class="grid-productos">
-        
-        <div class="tarjeta-producto">
-            <div class="producto-cuerpo">
-                <h3 class="producto-titulo">Hamburguesa Bembos Clásica</h3>
-                <p style="color: #6B7280; font-size: 14px; margin-bottom: 15px;">Carne a la parrilla, lechuga, tomate y salsas de la casa.</p>
-                <div class="producto-precio">S/ 15.90</div>
-                <button class="btn-agregar">🛒 Agregar al Carrito</button>
-            </div>
+    <h2>Nuestra Carta <a href="{% url 'ver_carrito' %}" style="float: right; background: #F3D05C; padding: 10px; border-radius: 4px; text-decoration:none; color:black;">🛒 Ver Bolsa</a></h2>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        {% for prod in productos %}
+        <div style="border: 1px solid #D1D5DB; padding: 15px; border-radius: 8px;">
+            <h3>{{ prod.nombre }}</h3>
+            <p>{{ prod.descripcion }}</p>
+            <h2>S/ {{ prod.precio }}</h2>
+            <a href="{% url 'agregar_al_carrito' prod.id %}" style="display:block; text-align:center; background:#002FA7; color:white; padding:10px; text-decoration:none;">Añadir</a>
         </div>
-
-        <div class="tarjeta-producto">
-            <div class="producto-cuerpo">
-                <h3 class="producto-titulo">Combo Bembos Extrema</h3>
-                <p style="color: #6B7280; font-size: 14px; margin-bottom: 15px;">Hamburguesa con queso y tocino + Papas medianas + Gaseosa.</p>
-                <div class="producto-precio">S/ 24.90</div>
-                <button class="btn-agregar">🛒 Agregar al Carrito</button>
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

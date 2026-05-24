@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bembos-card">
+    <h2>Monitor de Cocina</h2>
+    <table class="bembos-table">
+        <tr><th>ID</th><th>Cliente</th><th>Estado</th><th>Acciones</th></tr>
+        {% for ped in pedidos %}
+        <tr>
+            <td>#{{ ped.id }}</td><td>{{ ped.usuario.username }}</td><td>{{ ped.estado }}</td>
+            <td>
+                {% if ped.estado == 'ENTRANTE' %}<a href="{% url 'cambiar_estado' ped.id 'ACEPTADO' %}">Aceptar</a>
+                {% elif ped.estado == 'ACEPTADO' %}<a href="{% url 'cambiar_estado' ped.id 'PREPARACION' %}">Preparar</a>
+                {% elif ped.estado == 'PREPARACION' %}<a href="{% url 'cambiar_estado' ped.id 'LISTO' %}">Listo</a>
+                {% elif ped.estado == 'LISTO' %}<a href="{% url 'cambiar_estado' ped.id 'ENTREGADO' %}">Despachar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
