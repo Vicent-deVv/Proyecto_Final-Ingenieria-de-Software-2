@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'css/gestion.css' %}">
+{% endblock %}
+
+{% block titulo_pantalla %}Panel de Gestión Operativa (Almacén / Cocina){% endblock %}
+
+{% block content %}
+<div class="bembos-card">
+    <h2>Seleccione una operación para continuar</h2>
+    
+    <div class="grid-panel">
+        <button class="btn-panel bg-amarillo">📦 Registrar Entrada</button>
+        <button class="btn-panel bg-rojo">🚪 Registrar Salida</button>
+        <button class="btn-panel bg-celeste">🗑️ Registrar Merma</button>
+    </div>
+
+    <div class="grid-panel-secundario">
+        <button class="btn-panel bg-azul">🔍 Consultar Stock</button>
+        <button class="btn-panel bg-amarillo">📋 Ver Historial</button>
+    </div>
+</div>
+{% endblock %}

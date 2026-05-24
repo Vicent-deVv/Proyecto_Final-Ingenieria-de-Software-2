@@ -1,0 +1,54 @@
+/* Contenedor en cuadrícula para los productos de la tienda */
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.tarjeta-producto {
+    background-color: #ffffff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+}
+
+.producto-cuerpo {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.producto-titulo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.producto-precio {
+    font-size: 20px;
+    font-weight: 800;
+    color: #002FA7; /* Azul Bembos */
+    margin-top: auto;
+    margin-bottom: 15px;
+}
+
+.btn-agregar {
+    background-color: #002FA7;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-agregar:hover {
+    background-color: #001F70;
+}

@@ -3,14 +3,8 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-def index(request):
-    return HttpResponse("Index")
-
 def main_clientes(request):
     return render(request, 'usuarios/main_cliente.html')
-
-def carta_clientes(request):
-    return HttpResponse("Cartaclientes")
 
 def login_personalizado(request):
     if request.user.is_authenticated:
@@ -89,3 +83,18 @@ def registro_personalizado(request):
             return redirect('carta_clientes')
 
     return render(request, 'usuarios/registro.html', {'error': error_mensaje})
+
+
+def index(request):
+    """
+    RUTA 1: Panel de Gestión Integral para Empleados/Supervisores (Almacén, Cocina, etc.)
+    """
+    return render(request, 'usuarios/gestion.html')
+
+
+def carta_clientes(request):
+    """
+    RUTA 2: Catálogo o Menú principal de cara al Cliente para armar su pedido
+    """
+    # Nota: Más adelante, aquí jalarás Producto.objects.all() para enviarlo al HTML
+    return render(request, 'usuarios/carta.html')

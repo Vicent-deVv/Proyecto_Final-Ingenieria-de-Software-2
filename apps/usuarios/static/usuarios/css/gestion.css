@@ -1,0 +1,38 @@
+/* Colores de los botones del panel de control de empleados */
+.grid-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.grid-panel-secundario {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 66.6%;
+    margin-top: 25px;
+}
+
+.btn-panel {
+    padding: 30px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.btn-panel:hover {
+    transform: translateY(-3px);
+    filter: brightness(0.95);
+}
+
+/* Colores específicos del Figma */
+.bg-amarillo { background-color: #F3D05C; color: #000; }
+.bg-rojo     { background-color: #E24C4C; color: #fff; }
+.bg-celeste  { background-color: #5CB3F3; color: #fff; }
+.bg-azul     { background-color: #4BA3E3; color: #fff; }

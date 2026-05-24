@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'css/carta.css' %}">
+{% endblock %}
+
+{% block titulo_pantalla %}Nuestra Carta - Bembos Pasión{% endblock %}
+
+{% block content %}
+<div class="bembos-card">
+    <h2>¿Qué se te antoja hoy?</h2>
+    
+    <div class="grid-productos">
+        
+        <div class="tarjeta-producto">
+            <div class="producto-cuerpo">
+                <h3 class="producto-titulo">Hamburguesa Bembos Clásica</h3>
+                <p style="color: #6B7280; font-size: 14px; margin-bottom: 15px;">Carne a la parrilla, lechuga, tomate y salsas de la casa.</p>
+                <div class="producto-precio">S/ 15.90</div>
+                <button class="btn-agregar">🛒 Agregar al Carrito</button>
+            </div>
+        </div>
+
+        <div class="tarjeta-producto">
+            <div class="producto-cuerpo">
+                <h3 class="producto-titulo">Combo Bembos Extrema</h3>
+                <p style="color: #6B7280; font-size: 14px; margin-bottom: 15px;">Hamburguesa con queso y tocino + Papas medianas + Gaseosa.</p>
+                <div class="producto-precio">S/ 24.90</div>
+                <button class="btn-agregar">🛒 Agregar al Carrito</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
