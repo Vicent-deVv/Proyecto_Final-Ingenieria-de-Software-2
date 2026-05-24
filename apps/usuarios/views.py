@@ -4,7 +4,6 @@ from django.contrib import messages
 from .models import Usuario
 from apps.pedidos.models import Producto
 
-
 def login_personalizado(request):
     if request.method == 'POST':
         u = request.POST.get('username')
@@ -15,7 +14,7 @@ def login_personalizado(request):
             # Validamos si es Admin de Django (superusuario) o si es personal de tienda
             if user.is_superuser or user.rol in ['COCINERO', 'ALMACENERO', 'SUPERVISOR']:
                 return redirect('index') # Al panel de control/gestión
-            return redirect('carta_clientes') # Clientes van a la carta
+            return redirect('carta') # CORREGIDO: Clientes van a la ruta 'carta'
         else:
             messages.error(request, "Credenciales inválidas.")
     return render(request, 'usuarios/login.html')
@@ -44,3 +43,7 @@ def index(request):
 def carta_clientes(request):
     productos = Producto.objects.filter(activo=True)
     return render(request, 'usuarios/carta.html', {'productos': productos})
+
+# ¡NUEVA FUNCIÓN AÑADIDA PARA EL CARRITO!
+def ver_carrito(request):
+    return render(request, 'usuarios/carrito.html')

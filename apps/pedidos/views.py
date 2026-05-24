@@ -10,7 +10,7 @@ def agregar_al_carrito(request, producto_id):
     carrito[id_str] = carrito.get(id_str, 0) + 1
     request.session['carrito'] = carrito
     messages.success(request, "Añadido a la bolsa.")
-    return redirect('carta_clientes')
+    return redirect('carta')
 
 def ver_carrito(request):
     carrito = request.session.get('carrito', {})
@@ -25,7 +25,7 @@ def ver_carrito(request):
 
 def confirmar_pedido(request):
     carrito = request.session.get('carrito', {})
-    if not carrito: return redirect('carta_clientes')
+    if not carrito: return redirect('carta')
         
     total = decimal.Decimal('0.00')
     pedido = Pedido.objects.create(usuario=request.user, estado='ENTRANTE', total=0)
@@ -49,7 +49,7 @@ def confirmar_pedido(request):
     
     request.session['carrito'] = {}
     messages.success(request, f"Pedido #{pedido.id} enviado a cocina.")
-    return redirect('carta_clientes')
+    return redirect('carta')
 
 def monitor_cocina(request):
     pedidos = Pedido.objects.exclude(estado='ENTREGADO').order_by('fecha_creacion')
